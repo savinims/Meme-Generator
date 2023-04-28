@@ -3,7 +3,7 @@ from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
 
 
-class TxtIngestor(IngestorInterface):
+class TextIngestor(IngestorInterface):
     """
     A class for ingesting quotes from .txt files.
     """
@@ -29,10 +29,14 @@ class TxtIngestor(IngestorInterface):
             raise Exception('cannot ingest exception')
 
         quotes = []
-        with open(path, 'r') as f:
+
+        with open(path, 'r', encoding='utf-8-sig') as f:
             for line in f:
                 parts_list = line.split('-')
                 new_quote = QuoteModel(parts_list[0], parts_list[1])
                 quotes.append(new_quote)
 
         return quotes
+    
+
+

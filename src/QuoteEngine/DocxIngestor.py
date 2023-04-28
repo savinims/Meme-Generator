@@ -40,3 +40,4 @@ class DocxIngestor(IngestorInterface):
                 quotes.append(new_quote)
 
         return quotes
+

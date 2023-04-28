@@ -1,9 +1,8 @@
 from typing import List
 import subprocess
-import os
-import random
 from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
+
 
 
 class PDFIngestor(IngestorInterface):
@@ -31,19 +30,16 @@ class PDFIngestor(IngestorInterface):
         if not cls.can_ingest(path):
             raise Exception('Cannot Ingest Exception')
 
-        tmp = f'./tmp/{random.randint(0,1000000)}.txt'
-        call = subprocess.call(['pdftotext', path, tmp])
-
-        file_ref = open(tmp, "r")
+        p = subprocess.Popen(['pdftotext', '-layout', path, '-'], stdout=subprocess.PIPE)
         quotes = []
-        for line in file_ref.readlines():
-            line = line.strip('\n\r').strip()
-            if len(line) > 0:
-                parse_list = line.split('-')
-                new_quote = QuoteModel(parse_list[0], parse_list[1])
-                quotes.append(new_quote)
+        for line in p.stdout:                    
+            line = line.decode('utf-8').strip()
 
-        file_ref.close()
-        os.remove(tmp)
+            if len(line)>0:
+                body, author = line.split('-')
+                quotes.append(QuoteModel(body, author))           
 
         return quotes
+    
+    
+    
