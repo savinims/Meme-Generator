@@ -9,7 +9,17 @@ from MemeEngine import MemeEngine
 
 
 def generate_meme(path=None, body=None, author=None):
-    """ Generate a meme given an path and a quote """
+    """
+    Generate a meme given an image path and a quote.
+
+    Args:
+        path (str): Path to the base image.
+        body (str): Quote body to add to the image.
+        author (str): Quote author to add to the image.
+
+    Returns:
+        str: Path to the generated meme image.
+    """
     img = None
     quote = None
 
@@ -47,7 +57,6 @@ def generate_meme(path=None, body=None, author=None):
 
 if __name__ == "__main__":
 
-    print('code started')
     parser = argparse.ArgumentParser(description="Generate Motivational Meme.")
     parser.add_argument('--path', type=str,help="path to the base image")
     parser.add_argument('--body', type=str,
@@ -56,5 +65,4 @@ if __name__ == "__main__":
                         help="quote author to add to the image")
 
     args = parser.parse_args()
-    print(args.path, args.body, args.author)
     print(generate_meme(args.path, args.body, args.author))
