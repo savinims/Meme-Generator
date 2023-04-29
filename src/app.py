@@ -4,7 +4,7 @@ import requests
 from flask import Flask, render_template, abort, request
 from MemeEngine import MemeEngine
 from QuoteEngine.Ingestor import Ingestor
-
+import tempfile
 
 app = Flask(__name__)
 
@@ -56,17 +56,23 @@ def meme_form():
 def meme_post():
     """ Create a user defined meme """
 
-    # @TODO:
-    # 1. Use requests to save the image from the image_url
-    #    form param to a temp local file.
-    # 2. Use the meme object to generate a meme using this temp
-    #    file and the body and author form paramaters.
-    # 3. Remove the temporary saved image.
+    image_url = request.form.get("image_url")
+    body = request.form.get("body")
+    author = request.form.get("author")
+    
+    try:
+        with tempfile.NamedTemporaryFile(delete=False) as f:
+            response = requests.get(image_url)
+            response.raise_for_status() 
+            f.write(response.content)
+       
+        path = meme.make_meme(f.name, body, author)
+        os.remove(f.name)
+        return render_template('meme.html', path=path)
 
-    path = None
-
-    return render_template('meme.html', path=path)
-
+    except Exception as e:
+        raise Exception(f"Failed to create meme: {str(e)}")
+    
 
 if __name__ == "__main__":
     app.run()
