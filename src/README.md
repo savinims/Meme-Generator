@@ -13,6 +13,7 @@ The main parts of the project include
 4) Flask web app, which is able to create memes in both 'Random' and 'Creator' modes.
 
 ![Random Mode](src/Images/Random.JPG)
+
 ![Creator Mode](src/Images/Creator.JPG)
 
 ### Quote Engine
