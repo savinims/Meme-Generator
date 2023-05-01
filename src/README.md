@@ -2,12 +2,12 @@
 
 The Meme Generator is a multimedia application designed to dynamically generate memes, including an image with an overlaid quote. 
 The application reads quotes from a variety of file formats and displays them on top of images. The project is packaged as a command-line tool and a simple 
-web service. The webservice is able to create motivational modes in the 'Random' and 'Creator' modes.
-In the random mode, a randomly selected image from the src/_data/photos/dog/ folder is overlayed with a random motivational quote from one of the files in src/_data/DogQuotes/.
+web service. The web-service is able to create motivational modes in the 'Random' and 'Creator' modes.
+In the random mode, a randomly selected image from the `src/_data/photos/dog/` folder is overlayed with a random motivational quote from one of the files in `src/_data/DogQuotes/`.
 In the creator mode, the user provides the URL of the base image, the motivational quote and its author.
 
 The main parts of the project include
-1) The QuoteEngine, which is resposible for extracting the motivational quotes and their authors from a variety of file formats.
+1) The QuoteEngine, which is resposible for extracting the motivational quotes, and their authors from different file formats.
 2) The MemeEngine, which is responsible for generating the memes by overlaying the text of motivational quotes on a base image.
 3) Command line interface, which takes several optional parameters.
 4) Flask web app, which is able to create memes in both 'Random' and 'Creator' modes.
@@ -44,6 +44,6 @@ In the 'Creator' mode, it uses the requests package to fetch an image from a use
 Necessary dependencies for this project are included in the requirements.txt file. A user can replicate this work by recreating a virtual environment consisting of these dependencies.
 The following commands can be used to run the Flask web-app
 
-set FLASK_APP=app.py
-flask run --host 0.0.0.0 --port 3000 --reload 
+`set FLASK_APP=app.py`
+`flask run --host 0.0.0.0 --port 3000 --reload` 
 
