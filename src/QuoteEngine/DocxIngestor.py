@@ -1,20 +1,19 @@
+"""A concrete class for DOCX files."""
 from typing import List
 import docx
 from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
 
 
-class DocxIngestor(IngestorInterface):
-    """
-    A class that implements the IngestorInterface and allows ingestion of quotes
-    from Microsoft Word .docx files.
-    """
+class DocxIngestor(IngestorInterface):   
+    """A class that implements the IngestorInterface to ingest quotes from Microsoft Word .docx files."""
+       
     allowed_extensions = ['docx']
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """
-        Parses a .docx file at the given path and returns a list of QuoteModel objects.
+        Parse a .docx file at the given path and returns a list of QuoteModel objects.
 
         Args:
             path (str): The path to the .docx file to be ingested.
@@ -40,4 +39,3 @@ class DocxIngestor(IngestorInterface):
                 quotes.append(new_quote)
 
         return quotes
-

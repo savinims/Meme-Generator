@@ -1,21 +1,19 @@
+"""A concrete class for PDF files."""
 from typing import List
 import subprocess
 from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
 
 
-
 class PDFIngestor(IngestorInterface):
-    """
-    A class for ingesting quotes from PDF files.
-    """
+    """A class for ingesting quotes from PDF files."""
 
     allowed_extensions = ['pdf']
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """
-        Parses a PDF file and returns a list of QuoteModel objects.
+        Parse a PDF file and returns a list of QuoteModel objects.
 
         Args:
             path (str): The path to the PDF file.
@@ -26,20 +24,17 @@ class PDFIngestor(IngestorInterface):
         Raises:
             Exception: If the file cannot be ingested.
         """
-
         if not cls.can_ingest(path):
             raise Exception('Cannot Ingest Exception')
 
-        p = subprocess.Popen(['pdftotext', '-layout', path, '-'], stdout=subprocess.PIPE)
+        p = subprocess.Popen(
+            ['pdftotext', '-layout', path, '-'], stdout=subprocess.PIPE)
         quotes = []
-        for line in p.stdout:                    
+        for line in p.stdout:
             line = line.decode('utf-8').strip()
 
-            if len(line)>0:
+            if len(line) > 0:
                 body, author = line.split('-')
-                quotes.append(QuoteModel(body, author))           
+                quotes.append(QuoteModel(body, author))
 
         return quotes
-    
-    
-    

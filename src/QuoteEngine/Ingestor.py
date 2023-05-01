@@ -1,3 +1,4 @@
+"""Module implementing the ingestor logic."""
 from typing import List
 from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
@@ -15,7 +16,6 @@ class Ingestor(IngestorInterface):
     importers (list): A list of importer classes that are used to ingest different types of files.
     """
 
-
     importers = [DocxIngestor, CSVIngestor, PDFIngestor, TextIngestor]
 
     @classmethod
@@ -29,8 +29,15 @@ class Ingestor(IngestorInterface):
         Returns:
         A list of QuoteModel objects extracted from the file.
         """
-
+        ingested = False
+        quotes = []
 
         for importer in cls.importers:
             if importer.can_ingest(path):
-                return importer.parse(path)
+                quotes = importer.parse(path)
+                ingested = True
+
+        if not ingested:
+            print("Unsupported file ", path)
+
+        return quotes

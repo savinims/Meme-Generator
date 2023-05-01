@@ -1,8 +1,7 @@
+"""The meme generation module."""
 import os
 import random
 import argparse
-
-
 from QuoteEngine.Ingestor import Ingestor
 from QuoteEngine.QuoteModel import QuoteModel
 from MemeEngine import MemeEngine
@@ -35,9 +34,9 @@ def generate_meme(path=None, body=None, author=None):
 
     if body is None:
         quote_files = ['./_data/DogQuotes/DogQuotesTXT.txt',
-                        './_data/DogQuotes/DogQuotesDOCX.docx',
-                        './_data/DogQuotes/DogQuotesPDF.pdf',
-                        './_data/DogQuotes/DogQuotesCSV.csv']
+                       './_data/DogQuotes/DogQuotesDOCX.docx',
+                       './_data/DogQuotes/DogQuotesPDF.pdf',
+                       './_data/DogQuotes/DogQuotesCSV.csv']
         quotes = []
         for f in quote_files:
             quotes.extend(Ingestor.parse(f))
@@ -50,7 +49,7 @@ def generate_meme(path=None, body=None, author=None):
 
     meme = MemeEngine('./tmp')
     print(img)
-    
+
     path = meme.make_meme(img, quote.body, quote.author)
     return path
 
@@ -58,7 +57,7 @@ def generate_meme(path=None, body=None, author=None):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Generate Motivational Meme.")
-    parser.add_argument('--path', type=str,help="path to the base image")
+    parser.add_argument('--path', type=str, help="path to the base image")
     parser.add_argument('--body', type=str,
                         help="quote body to add to the image")
     parser.add_argument('--author', type=str,

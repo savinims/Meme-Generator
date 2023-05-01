@@ -1,3 +1,4 @@
+"""A concrete class for CSV files."""
 from typing import List
 import pandas
 from .IngestorInterface import IngestorInterface
@@ -11,7 +12,7 @@ class CSVIngestor(IngestorInterface):
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
-        """Parses a CSV file and returns a list of `QuoteModel` objects.
+        """Parse a CSV file and returns a list of `QuoteModel` objects.
 
         This method is required by the `IngestorInterface` and must be implemented by all concrete
         subclasses. It reads in the CSV file at the given `path`, creates a new `QuoteModel` instance

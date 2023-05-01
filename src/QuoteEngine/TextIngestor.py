@@ -1,19 +1,18 @@
+"""A concrete class for TXT files."""
 from typing import List
 from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
 
 
 class TextIngestor(IngestorInterface):
-    """
-    A class for ingesting quotes from .txt files.
-    """
+    """A class for ingesting quotes from .txt files."""
 
     allowed_extensions = ['txt']
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """
-        Parses a .txt file and returns a list of QuoteModel objects.
+        Parse a .txt file and returns a list of QuoteModel objects.
 
         Args:
             path (str): The path to the .txt file.
@@ -24,7 +23,6 @@ class TextIngestor(IngestorInterface):
         Raises:
             Exception: If the file cannot be ingested.
         """
-
         if not cls.can_ingest(path):
             raise Exception('cannot ingest exception')
 
@@ -37,6 +35,3 @@ class TextIngestor(IngestorInterface):
                 quotes.append(new_quote)
 
         return quotes
-    
-
-
