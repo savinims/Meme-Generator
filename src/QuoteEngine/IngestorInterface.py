@@ -4,9 +4,9 @@ from typing import List
 from .QuoteModel import QuoteModel
 
 
-class IngestorInterface(ABC):   
+class IngestorInterface(ABC):
     """An abstract base class that defines the interface for ingesting different types of files containing quotes."""
-    
+
     allowed_extensions = []
 
     @classmethod

@@ -5,9 +5,9 @@ from .IngestorInterface import IngestorInterface
 from .QuoteModel import QuoteModel
 
 
-class DocxIngestor(IngestorInterface):   
+class DocxIngestor(IngestorInterface):
     """A class that implements the IngestorInterface to ingest quotes from Microsoft Word .docx files."""
-       
+
     allowed_extensions = ['docx']
 
     @classmethod

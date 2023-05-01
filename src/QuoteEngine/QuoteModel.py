@@ -1,7 +1,9 @@
 """Module for QuoteModels that represent quotes."""
+
+
 class QuoteModel:
     """A class that represents a quote.
-    
+
     A quote consists of a body and an author.
     """
 

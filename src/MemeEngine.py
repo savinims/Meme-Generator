@@ -7,8 +7,8 @@ import os
 class MemeEngine:
     """
     The MemeEngine class handles the creation of memes.
-    
-    It resizes an image, adds text to it,and saves the resulting image to a specified directory.    
+
+    It resizes an image, adds text to it,and saves the resulting image to a specified directory.
     Attributes:
         output_dir (str): The directory where the meme images will be saved.
     """
@@ -46,8 +46,8 @@ class MemeEngine:
                      font_path: str, font_size: int = 20, font_color: str = "white") -> None:
         """
         Overlay text on an image.
-        
-        Write text towards the middle of the image. 
+
+        Write text towards the middle of the image.
         Automatically adjust font size if the text is wider than image width.
 
         Args:
@@ -61,7 +61,7 @@ class MemeEngine:
         draw = ImageDraw.Draw(resized_image)
         message = text + ' - ' + author
         font = ImageFont.truetype(font_path, size=font_size)
-        
+
         while font.getsize(message)[0] > resized_image.width:
             font_size -= 2
             font = ImageFont.truetype(font_path, size=font_size)
@@ -75,7 +75,7 @@ class MemeEngine:
                   font_path: str = "./_data/fonts/LilitaOne-Regular.ttf", datestr_frmt: str = "%m%d%Y_%H%M%S") -> str:
         """
         Create a meme.
-        
+
         Resize the image at the specified path and add text to it.
         Save the resulting image to the specified directory.
         Args:
