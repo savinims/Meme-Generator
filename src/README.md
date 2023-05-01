@@ -12,8 +12,11 @@ The main parts of the project include
 3) Command line interface, which takes several optional parameters.
 4) Flask web app, which is able to create memes in both 'Random' and 'Creator' modes.
 
-![Random Mode](./Images/Random.jpg)
-![Creator Mode](./Images/Creator/jpg)
+<img src="src/Images/Random.JPG" alt="alt text" width="500" height="300">
+
+![Random Mode](src/Images/Random.JPG)
+
+![Creator Mode](src/Images/Creator.JPG)
 
 ### Quote Engine
 
