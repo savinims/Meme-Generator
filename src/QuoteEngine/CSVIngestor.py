@@ -6,7 +6,7 @@ from .QuoteModel import QuoteModel
 
 
 class CSVIngestor(IngestorInterface):
-    """A class that ingests CSV files that contain quotes and returns a list of `QuoteModel` objects."""
+    """Class to ingest CSV files & return a list of `QuoteModel`s."""
 
     allowed_extensions = ['csv']
 
@@ -14,15 +14,18 @@ class CSVIngestor(IngestorInterface):
     def parse(cls, path: str) -> List[QuoteModel]:
         """Parse a CSV file and returns a list of `QuoteModel` objects.
 
-        This method is required by the `IngestorInterface` and must be implemented by all concrete
-        subclasses. It reads in the CSV file at the given `path`, creates a new `QuoteModel` instance
-        for each row in the file, and returns a list of all the `QuoteModel` instances created.
+        This method is required by the `IngestorInterface`
+        and must be implemented by all concrete subclasses.
+        It reads in the CSV file at the given `path`,
+        creates a new `QuoteModel` instance  for each row in the file,
+        and returns a list of all the `QuoteModel` instances created.
 
         Args:
             path (str): The file path of the CSV file to parse.
 
         Returns:
-            List[QuoteModel]: A list of `QuoteModel` instances representing the quotes in the CSV file.
+            List[QuoteModel]: A list of `QuoteModel` instances
+            representing the quotes in the CSV file.
         """
         if not cls.can_ingest(path):
             raise Exception('cannot ingest exception')

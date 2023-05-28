@@ -6,21 +6,21 @@ from .QuoteModel import QuoteModel
 
 
 class DocxIngestor(IngestorInterface):
-    """A class that implements the IngestorInterface to ingest quotes from Microsoft Word .docx files."""
+    """A class implementing IngestorInterface for .docx files."""
 
     allowed_extensions = ['docx']
 
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """
-        Parse a .docx file at the given path and returns a list of QuoteModel objects.
+        Parse a .docx file at a given path and return a list of QuoteModels.
 
         Args:
             path (str): The path to the .docx file to be ingested.
 
         Raises:
-            Exception: If the file at the given path has an extension that is not
-            allowed by this class.
+            Exception: If the file at the given path has an extension
+            that is not allowed by this class.
 
         Returns:
             A list of QuoteModel objects parsed from the .docx file.

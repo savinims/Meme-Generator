@@ -10,10 +10,11 @@ from .TextIngestor import TextIngestor
 
 class Ingestor(IngestorInterface):
     """
-    A class used to ingest files and extract quotes from them using various importers.
+    Class for ingesting files and extracting quotes using importers.
 
     Attributes:
-    importers (list): A list of importer classes that are used to ingest different types of files.
+    importers (list): A list of importer classes that are used to ingest
+    different types of files.
     """
 
     importers = [DocxIngestor, CSVIngestor, PDFIngestor, TextIngestor]
@@ -21,7 +22,7 @@ class Ingestor(IngestorInterface):
     @classmethod
     def parse(cls, path: str) -> List[QuoteModel]:
         """
-        Ingest a file and extract quotes from it using the appropriate importer.
+        Ingest a file and extract quotes using appropriate importer.
 
         Parameters:
         path (str): The path to the file to be ingested.

@@ -19,7 +19,8 @@ class PDFIngestor(IngestorInterface):
             path (str): The path to the PDF file.
 
         Returns:
-            List[QuoteModel]: A list of QuoteModel objects representing the quotes in the file.
+            List[QuoteModel]: A list of QuoteModel objects
+            representing the quotes in the file.
 
         Raises:
             Exception: If the file cannot be ingested.

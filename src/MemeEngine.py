@@ -5,13 +5,15 @@ import os
 import textwrap
 import random
 
+
 class MemeEngine:
     """
     The MemeEngine class handles the creation of memes.
 
-    It resizes an image, adds text to it,and saves the resulting image to a specified directory.
+    It resizes an image, adds text to it.
+    It saves the resulting image to a specified directory.
     Attributes:
-        output_dir (str): The directory where the meme images will be saved.
+        output_dir (str): The directory to save meme images.
     """
 
     def __init__(self, output_dir: str) -> None:
@@ -19,13 +21,13 @@ class MemeEngine:
         Create a MemeEngine object instance.
 
         Args:
-            output_dir (str): The directory where the meme images will be saved.
+            output_dir (str): The directory to save meme images.
         """
         self.output_dir = output_dir
 
     def resize_image(self, original_image: Image, max_width: int) -> Image:
         """
-        Resizes an image to have a maximum width of `max_width` while maintaining its aspect ratio.
+        Resizes an image to have a max width while maintaining aspect ratio.
 
         Args:
             original_image (Image): The original image to resize.
@@ -43,8 +45,9 @@ class MemeEngine:
 
         return resized_image
 
-    def overlay_text(self, resized_image: Image, text: str, author: str,
-                     font_path: str, font_size: int = 20, font_color: str = "white") -> None:
+    def overlay_text(
+            self, resized_image: Image, text: str, author: str, font_path: str,
+            font_size: int = 20, font_color: str = "white") -> None:
         """
         Overlay text on an image.
 
@@ -57,39 +60,41 @@ class MemeEngine:
             author (str): The author of the text.
             font_path (str): The path to the font file to use.
             font_size (int): The font size to use. Defaults to 20.
-            font_color (str): The color to use for the text. Defaults to "white".
+            font_color (str): The color to use for the text. Default "white".
         """
         draw = ImageDraw.Draw(resized_image)
         message = text + ' - ' + author
         font = ImageFont.truetype(font_path, size=font_size)
-        
-        x = random.uniform( resized_image.width*0.01, resized_image.width*0.5)
-        y = random.uniform( resized_image.height*0.01, resized_image.height*0.5)
-        
-        
-        message_width, message_height =font.getsize(message) 
-        if message_width > (resized_image.width-x):
-            avg_char_width = message_width/len(message)
-            wrapped_width = int((resized_image.width-x)/(avg_char_width))
-            wrapper = textwrap.TextWrapper(width=wrapped_width) 
+
+        x = random.uniform(
+            resized_image.width * 0.01,
+            resized_image.width * 0.5)
+        y = random.uniform(
+            resized_image.height * 0.01,
+            resized_image.height * 0.5)
+
+        message_width, message_height = font.getsize(message)
+        if message_width > (resized_image.width - x):
+            avg_char_width = message_width / len(message)
+            wrapped_width = int((resized_image.width - x) / (avg_char_width))
+            wrapper = textwrap.TextWrapper(width=wrapped_width)
             wrapped_lines = wrapper.wrap(text=message)
-        
-            for i,line in enumerate(wrapped_lines): 
-                draw.text((x, y + message_height*i), line, font=font, fill=font_color)
+
+            for i, line in enumerate(wrapped_lines):
+                draw.text((x, y + message_height * i), line,
+                          font=font, fill=font_color)
         else:
             draw.text((x, y), message, font=font, fill=font_color)
 
-
-
-    def read_image(self,img_path):
+    def read_image(self, img_path):
         """
         Read an image from the specified path.
-    
+
         Args:
             img_path (str): The path to the image file.
-    
+
         Returns:
-            PIL.Image.Image or None: The loaded image as a PIL.Image.Image object if successful,
+            PIL.Image.Image or None: The loaded image,
             or None if the file is not found or cannot be opened.
         """
         try:
@@ -103,36 +108,54 @@ class MemeEngine:
             return None
 
     def save_image(self, datestr_frmt, resized_image):
+        """
+        Save the resized image to the specified output directory.
+
+        Args:
+            datestr_frmt (str): The format string for the date to be
+                used in the output filename.
+            resized_image (PIL.Image.Image): The resized image
+                as a PIL.Image.Image object.
+
+        Returns:
+            str or None: The filepath of the saved image if successful,
+                or None if there was an error.
+        """
         if not os.path.exists(self.output_dir):
             try:
                 os.makedirs(self.output_dir)
             except OSError as e:
-                print(f"Error: {self.output_dir} : {e.strerror}")
+                print(
+                    f"Error creating directory: {self.output_dir}:\
+                        {e.strerror}")
                 return None
 
-        output_filepath = self.output_dir + '/' + \
-            datetime.now().strftime(datestr_frmt) + '.jpg'
+        output_filepath = os.path.join(
+            self.output_dir, datetime.now().strftime(datestr_frmt) + '.jpg')
         try:
             resized_image.save(output_filepath)
             return output_filepath
         except IOError as e:
-            print(f"Error: {e.strerror}")
+            print(f"Error saving image: {e.strerror}")
             return None
 
-    def make_meme(self, img_path: str, text: str, author: str, max_width: int = 500,
-                  font_path: str = "./_data/fonts/LilitaOne-Regular.ttf", datestr_frmt: str = "%m%d%Y_%H%M%S") -> str:
+    def make_meme(
+            self, img_path: str, text: str, author: str,
+            max_width: int = 500,
+            font_path: str = "./_data/fonts/LilitaOne-Regular.ttf",
+            datestr_frmt: str = "%m%d%Y_%H%M%S") -> str:
         """
         Create a meme.
 
         Resize the image at the specified path and add text to it.
         Save the resulting image to the specified directory.
         Args:
-            img_path (str): The path to the image to use as the base of the meme.
+            img_path (str): Path to the image.
             text (str): The text to add to the image.
             author (str): The author of the meme.
-            max_width (int): The maximum width of the resized image. Defaults to 500.
+            max_width (int): The max width of the resized image. Default 500.
             font_path (str): The path to the font file to use.
-            datestr_frmt (str): The format string for the timestamp to use in the output filename.
+            datestr_frmt (str): The timestamp format to use in output file.
                 Defaults to "%m%d%Y_%H%M%S".
 
         Returns:

@@ -12,15 +12,16 @@ class QuoteModel:
 
         Args:
             body (str): The body of the quote.
-            author (str, optional): The author of the quote. Defaults to 'unknown'.
+            author (str, optional): The author of the quote.
+                Defaults to 'unknown'.
         """
         self.body = body
         self.author = author
 
     def __repr__(self):
-        """Return a string representation of this object that can be used to recreate it.
+        """Return a string representation of this object.
 
         Returns:
-            str: A computer-readable string representation of this object.
+            str: A computer-readable string representation of obj.
         """
         return f"{self.body}, {self.author}"
