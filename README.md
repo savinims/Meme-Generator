@@ -27,7 +27,7 @@ It implements logic to select the appropriate helper for a given file based on t
 ### Meme Engine
 
 The Meme Engine Module is responsible for manipulating and drawing text onto images using the third-party Pillow library.
-It resizes images to have a maximum with of 500 pixels. The font sizes are adjusted such that the motivational quotes fit within the base image.
+It resizes images to have a maximum with of 500 pixels. 
 
 
 ### Command-Line Interface Tool
