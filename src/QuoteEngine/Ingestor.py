@@ -6,6 +6,7 @@ from .DocxIngestor import DocxIngestor
 from .CSVIngestor import CSVIngestor
 from .PDFIngestor import PDFIngestor
 from .TextIngestor import TextIngestor
+import logging
 
 
 class Ingestor(IngestorInterface):
@@ -39,6 +40,6 @@ class Ingestor(IngestorInterface):
                 ingested = True
 
         if not ingested:
-            print("Unsupported file ", path)
+            logging.error("Unsupported file ", path)
 
         return quotes

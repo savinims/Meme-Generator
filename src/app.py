@@ -6,6 +6,7 @@ from flask import Flask, render_template, request
 from MemeEngine import MemeEngine
 from QuoteEngine.Ingestor import Ingestor
 import tempfile
+import logging
 
 app = Flask(__name__)
 
@@ -87,10 +88,10 @@ def meme_post():
         return render_template('meme.html', path=path)
 
     except requests.exceptions.HTTPError as e:
-        print(f"An error occurred in downloading the image: {str(e)}")
+        logging.error(f"An error occurred in downloading the image: {str(e)}")
         return render_template('meme_form.html')
     except Exception as e:
-        print(f"Failed to create meme: {str(e)}")
+        logging.error(f"Failed to create meme: {str(e)}")
         return render_template('meme_form.html')
 
 

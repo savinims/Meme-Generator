@@ -4,6 +4,7 @@ from datetime import datetime
 import os
 import textwrap
 import random
+import logging
 
 
 class MemeEngine:
@@ -45,9 +46,49 @@ class MemeEngine:
 
         return resized_image
 
+    def get_random_location(self, width, height, lb, ub):
+        """
+        Generate a random location within the specified bounds.
+
+        Args:
+            width (int): The width of the image.
+            height (int): The height of the image.
+            lb (float): Lower bound of the text location as a % of the
+                image width or height.
+            ub (float): Upper bound of the text location as a % of the
+                image width or height.
+
+        Returns:
+            tuple: A tuple containing the coordinates (x, y).
+        """
+        x = random.uniform(width * lb, width * ub)
+        y = random.uniform(height * lb, height * ub)
+        return x, y
+
+    def wrap_text(self, message, message_width, valid_width):
+        """
+        Wrap a message into multiple lines to fit within the valid_width.
+
+        Args:
+            message (str): The text message to be wrapped.
+            message_width (int): Width of the original message in pixels.
+            valid_width (int): Width of the available space in pixels.
+
+        Returns:
+            list: A list of wrapped lines, where each line fits within
+                  the valid_width constraint.
+
+        """
+        avg_char_width = message_width / len(message)
+        wrapped_width = int(valid_width / avg_char_width)
+        wrapper = textwrap.TextWrapper(width=wrapped_width)
+        wrapped_lines = wrapper.wrap(text=message)
+        return wrapped_lines
+
     def overlay_text(
             self, resized_image: Image, text: str, author: str, font_path: str,
-            font_size: int = 20, font_color: str = "white") -> None:
+            font_size: int = 20, font_color: str = "white",
+            lb: float = 0.01, ub: float = 0.5) -> None:
         """
         Overlay text on an image.
 
@@ -61,24 +102,22 @@ class MemeEngine:
             font_path (str): The path to the font file to use.
             font_size (int): The font size to use. Defaults to 20.
             font_color (str): The color to use for the text. Default "white".
+            lb (float): Lower bound of the text location as a %
+                of image width or height.
+            ub (float): Upper bound of the text location as a %
+                of image width or height.
         """
         draw = ImageDraw.Draw(resized_image)
         message = text + ' - ' + author
         font = ImageFont.truetype(font_path, size=font_size)
 
-        x = random.uniform(
-            resized_image.width * 0.01,
-            resized_image.width * 0.5)
-        y = random.uniform(
-            resized_image.height * 0.01,
-            resized_image.height * 0.5)
-
+        x, y = self.get_random_location(
+            width=resized_image.width, height=resized_image.height,
+            lb=lb, ub=ub)
         message_width, message_height = font.getsize(message)
         if message_width > (resized_image.width - x):
-            avg_char_width = message_width / len(message)
-            wrapped_width = int((resized_image.width - x) / (avg_char_width))
-            wrapper = textwrap.TextWrapper(width=wrapped_width)
-            wrapped_lines = wrapper.wrap(text=message)
+            wrapped_lines = self.wrap_text(
+                message, message_width, (resized_image.width - x))
 
             for i, line in enumerate(wrapped_lines):
                 draw.text((x, y + message_height * i), line,
@@ -101,10 +140,10 @@ class MemeEngine:
             original_image = Image.open(img_path)
             return original_image
         except FileNotFoundError:
-            print("File not found")
+            logging.error("File not found")
             return None
         except Exception as e:
-            print(f"Error opening image: {str(e)}")
+            logging.error(f"Error opening image: {str(e)}")
             return None
 
     def save_image(self, datestr_frmt, resized_image):
@@ -125,7 +164,7 @@ class MemeEngine:
             try:
                 os.makedirs(self.output_dir)
             except OSError as e:
-                print(
+                logging.error(
                     f"Error creating directory: {self.output_dir}:\
                         {e.strerror}")
                 return None
@@ -136,7 +175,7 @@ class MemeEngine:
             resized_image.save(output_filepath)
             return output_filepath
         except IOError as e:
-            print(f"Error saving image: {e.strerror}")
+            logging.error(f"Error saving image: {e.strerror}")
             return None
 
     def make_meme(
