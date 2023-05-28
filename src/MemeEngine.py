@@ -2,7 +2,8 @@
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
 import os
-
+import textwrap
+import random
 
 class MemeEngine:
     """
@@ -47,8 +48,8 @@ class MemeEngine:
         """
         Overlay text on an image.
 
-        Write text towards the middle of the image.
-        Automatically adjust font size if the text is wider than image width.
+        Write text at a random location in the image.
+        Wrap text that is wider than image width.
 
         Args:
             resized_image (Image): The image to overlay text on.
@@ -61,15 +62,62 @@ class MemeEngine:
         draw = ImageDraw.Draw(resized_image)
         message = text + ' - ' + author
         font = ImageFont.truetype(font_path, size=font_size)
+        
+        x = random.uniform( resized_image.width*0.01, resized_image.width*0.5)
+        y = random.uniform( resized_image.height*0.01, resized_image.height*0.5)
+        
+        
+        message_width, message_height =font.getsize(message) 
+        if message_width > (resized_image.width-x):
+            avg_char_width = message_width/len(message)
+            wrapped_width = int((resized_image.width-x)/(avg_char_width))
+            wrapper = textwrap.TextWrapper(width=wrapped_width) 
+            wrapped_lines = wrapper.wrap(text=message)
+        
+            for i,line in enumerate(wrapped_lines): 
+                draw.text((x, y + message_height*i), line, font=font, fill=font_color)
+        else:
+            draw.text((x, y), message, font=font, fill=font_color)
 
-        while font.getsize(message)[0] > resized_image.width:
-            font_size -= 2
-            font = ImageFont.truetype(font_path, size=font_size)
 
-        text_width, text_height = draw.textsize(message, font=font)
-        x = (resized_image.width - text_width) / 2
-        y = (resized_image.height - text_height) / 2
-        draw.text((x, y), message, font=font, fill=font_color)
+
+    def read_image(self,img_path):
+        """
+        Read an image from the specified path.
+    
+        Args:
+            img_path (str): The path to the image file.
+    
+        Returns:
+            PIL.Image.Image or None: The loaded image as a PIL.Image.Image object if successful,
+            or None if the file is not found or cannot be opened.
+        """
+        try:
+            original_image = Image.open(img_path)
+            return original_image
+        except FileNotFoundError:
+            print("File not found")
+            return None
+        except Exception as e:
+            print(f"Error opening image: {str(e)}")
+            return None
+
+    def save_image(self, datestr_frmt, resized_image):
+        if not os.path.exists(self.output_dir):
+            try:
+                os.makedirs(self.output_dir)
+            except OSError as e:
+                print(f"Error: {self.output_dir} : {e.strerror}")
+                return None
+
+        output_filepath = self.output_dir + '/' + \
+            datetime.now().strftime(datestr_frmt) + '.jpg'
+        try:
+            resized_image.save(output_filepath)
+            return output_filepath
+        except IOError as e:
+            print(f"Error: {e.strerror}")
+            return None
 
     def make_meme(self, img_path: str, text: str, author: str, max_width: int = 500,
                   font_path: str = "./_data/fonts/LilitaOne-Regular.ttf", datestr_frmt: str = "%m%d%Y_%H%M%S") -> str:
@@ -90,28 +138,11 @@ class MemeEngine:
         Returns:
             str: The path to the saved meme image.
         """
-        try:
-            original_image = Image.open(img_path)
-        except FileNotFoundError:
-            print("File not found")
-            return None
+        original_image = self.read_image(img_path)
 
         resized_image = self.resize_image(original_image, max_width)
         self.overlay_text(resized_image, text, author, font_path)
 
-        if not os.path.exists(self.output_dir):
-            try:
-                os.makedirs(self.output_dir)
-            except OSError as e:
-                print(f"Error: {self.output_dir} : {e.strerror}")
-                return None
-
-        output_filepath = self.output_dir + '/' + \
-            datetime.now().strftime(datestr_frmt) + '.jpg'
-        try:
-            resized_image.save(output_filepath)
-        except IOError as e:
-            print(f"Error: {e.strerror}")
-            return None
+        output_filepath = self.save_image(datestr_frmt, resized_image)
 
         return output_filepath
