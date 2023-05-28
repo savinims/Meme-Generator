@@ -12,7 +12,7 @@ The main parts of the project include
 3) Command line interface, which takes several optional parameters.
 4) Flask web app, which is able to create memes in both 'Random' and 'Creator' modes.
 
-<img src="./src/Images/Slide1.PNG" alt="Random">
+<img src="./src/Images/Slide1.png" alt="Random">
 <img src="./src/Images/Slide2.PNG" alt="Creator">
 
 ### Quote Engine
@@ -27,7 +27,7 @@ It implements logic to select the appropriate helper for a given file based on t
 ### Meme Engine
 
 The Meme Engine Module is responsible for manipulating and drawing text onto images using the third-party Pillow library.
-It resizes images to have a maximum with of 500 pixels. The font sizes are adjusted such that the motivational quotes fit within the base image.
+It resizes images to have a maximum with of 500 pixels. 
 
 
 ### Command-Line Interface Tool
