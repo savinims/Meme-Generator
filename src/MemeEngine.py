@@ -115,9 +115,9 @@ class MemeEngine:
             width=resized_image.width, height=resized_image.height,
             lb=lb, ub=ub)
         message_width, message_height = font.getsize(message)
-        if message_width > (resized_image.width - x):
+        if message_width > (resized_image.width - x - 3):
             wrapped_lines = self.wrap_text(
-                message, message_width, (resized_image.width - x))
+                message, message_width, (resized_image.width - x - 3))
 
             for i, line in enumerate(wrapped_lines):
                 draw.text((x, y + message_height * i), line,
